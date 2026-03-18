@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ありがとうございます | ソトエル</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --primary: #1B6CB0;
+      --accent: #FF6B35;
+      --bg: #FFFFFF;
+      --bg-light: #F7F9FC;
+      --text: #1A1A1A;
+      --text-light: #6B7280;
+      --border: #E5E7EB;
+      --radius: 12px;
+      --shadow: 0 4px 24px rgba(0,0,0,0.08);
+    }
+    html { font-size: 16px; }
+    body {
+      font-family: 'Noto Sans JP', -apple-system, sans-serif;
+      color: var(--text);
+      background: var(--bg-light);
+      line-height: 1.8;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .header {
+      background: var(--primary);
+      color: #fff;
+      padding: 16px 20px;
+      text-align: center;
+      font-size: 14px;
+      font-weight: 700;
+    }
+    .main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+    .card {
+      background: var(--bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      max-width: 480px;
+      width: 100%;
+      padding: 48px 32px;
+      text-align: center;
+    }
+    .check-icon {
+      width: 64px;
+      height: 64px;
+      background: #10B981;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+    }
+    .check-icon svg {
+      width: 32px;
+      height: 32px;
+      color: #fff;
+    }
+    .card h1 {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: var(--text);
+    }
+    .card p {
+      color: var(--text-light);
+      font-size: 15px;
+      margin-bottom: 8px;
+    }
+    .card .highlight {
+      color: var(--primary);
+      font-weight: 700;
+    }
+    .back-link {
+      display: inline-block;
+      margin-top: 32px;
+      padding: 12px 32px;
+      background: var(--primary);
+      color: #fff;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .back-link:hover {
+      background: #14527F;
+    }
+    .footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 12px;
+      color: var(--text-light);
+    }
+  </style>
+</head>
+<body>
+  <div class="header">外壁塗装専用アプリ「ソトエル」</div>
+
+  <div class="main">
+    <div class="card">
+      <div class="check-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+      </div>
+      <h1>ありがとうございます</h1>
+      <p>ソトエル担当より<span class="highlight">3営業日以内</span>に</p>
+      <p>お電話いたします。</p>
+      <a href="/" class="back-link">ソトエルについて詳しく見る</a>
+    </div>
+  </div>
+
+  <div class="footer">&copy; 2026 ソトエル All Rights Reserved.</div>
+</body>
+</html>
