@@ -141,7 +141,7 @@
       <h1>興味あり</h1>
       <p class="subtitle">ソトエル担当からお電話いたします</p>
 
-      <form action="/api/cta" method="POST">
+      <form action="/api/cta" method="POST" id="cta-form">
         <div class="form-group">
           <label>会社名 / 屋号<span class="required">*必須</span></label>
           <input type="text" name="company" required placeholder="例: 株式会社○○塗装">
@@ -150,6 +150,12 @@
           <label>電話番号<span class="required">*必須</span></label>
           <input type="tel" name="phone" required placeholder="例: 090-1234-5678" inputmode="tel">
         </div>
+        <!-- メール経由のトラッキング識別子（クエリパラメータから自動転記） -->
+        <input type="hidden" name="u" value="">
+        <input type="hidden" name="c" value="">
+        <input type="hidden" name="utm_source" value="">
+        <input type="hidden" name="utm_medium" value="">
+        <input type="hidden" name="utm_campaign" value="">
         <button type="submit" class="submit-btn">送信する</button>
       </form>
 
@@ -158,5 +164,20 @@
   </div>
 
   <div class="footer">&copy; 2026 ソトエル All Rights Reserved.</div>
+
+  <script>
+    // URL クエリパラメータを hidden field に転記（メール経由トラッキング）
+    (function () {
+      const params = new URLSearchParams(location.search);
+      const form = document.getElementById('cta-form');
+      if (!form) return;
+      ['u', 'c', 'utm_source', 'utm_medium', 'utm_campaign'].forEach((key) => {
+        const value = params.get(key);
+        if (value == null) return;
+        const input = form.querySelector(`input[name="${key}"]`);
+        if (input) input.value = value;
+      });
+    })();
+  </script>
 </body>
 </html>
