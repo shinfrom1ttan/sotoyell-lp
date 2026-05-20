@@ -170,13 +170,34 @@
     (function () {
       const params = new URLSearchParams(location.search);
       const form = document.getElementById('cta-form');
-      if (!form) return;
-      ['u', 'c', 'utm_source', 'utm_medium', 'utm_campaign'].forEach((key) => {
-        const value = params.get(key);
-        if (value == null) return;
-        const input = form.querySelector(`input[name="${key}"]`);
-        if (input) input.value = value;
-      });
+      const u = params.get('u');
+      const c = params.get('c');
+      const utmSource = params.get('utm_source');
+      const utmMedium = params.get('utm_medium');
+      const utmCampaign = params.get('utm_campaign');
+
+      // hidden field に転記
+      if (form) {
+        ['u', 'c', 'utm_source', 'utm_medium', 'utm_campaign'].forEach((key) => {
+          const value = params.get(key);
+          if (value == null) return;
+          const input = form.querySelector(`input[name="${key}"]`);
+          if (input) input.value = value;
+        });
+      }
+
+      // CTA → LP 到達を Clicks シートに記録（メール経由のときのみ）
+      if (u && c) {
+        const img = new Image();
+        const qs = new URLSearchParams({
+          u: u,
+          c: c,
+          utm_source: utmSource || '',
+          utm_medium: utmMedium || '',
+          utm_campaign: utmCampaign || '',
+        }).toString();
+        img.src = `/api/track/click?${qs}`;
+      }
     })();
   </script>
 </body>

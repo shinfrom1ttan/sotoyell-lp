@@ -54,22 +54,21 @@ export default async function handler(req, res) {
     }
   }
 
-  // Sheets の Clicks シートに追記（非同期・失敗してもフローは続行）
-  if (u || c) {
-    appendRow('Clicks', [
-      new Date().toISOString(),
-      c,
-      u,
-      decodedEmail,
-      company,
-      phone,
-      utmSource,
-      utmMedium,
-      utmCampaign,
-    ]).catch((err) => {
-      console.error('Sheets append (Clicks) failed:', err.message);
-    });
-  }
+  // Sheets の Conversions シートに追記（フォーム送信＝コンバージョン）
+  // Clicks シートは /api/track/click が「LP到達」として書く別物。混同しない。
+  appendRow('Conversions', [
+    new Date().toISOString(),
+    c,
+    u,
+    decodedEmail,
+    company,
+    phone,
+    utmSource,
+    utmMedium,
+    utmCampaign,
+  ]).catch((err) => {
+    console.error('Sheets append (Conversions) failed:', err.message);
+  });
 
   return res.redirect(302, '/thanks.html');
 }
