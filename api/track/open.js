@@ -35,18 +35,20 @@ export default async function handler(req, res) {
     req.socket?.remoteAddress ||
     '';
 
-  // 非同期で書き込み（ピクセル応答を遅延させない）
-  appendRow('Opens', [
-    new Date().toISOString(),
-    c,
-    u,
-    decodeToken(u),
-    ua,
-    ip,
-    /GoogleImageProxy/i.test(ua) ? 'proxy' : 'client',
-  ]).catch((err) => {
+  // Sheets 書き込みを await（res.end() 後の Promise は実行保証されないため）
+  try {
+    await appendRow('Opens', [
+      new Date().toISOString(),
+      c,
+      u,
+      decodeToken(u),
+      ua,
+      ip,
+      /GoogleImageProxy/i.test(ua) ? 'proxy' : 'client',
+    ]);
+  } catch (err) {
     console.error('Sheets append (Opens) failed:', err.message);
-  });
+  }
 
   // ピクセル返却
   for (const [k, v] of Object.entries(PIXEL_HEADERS)) res.setHeader(k, v);

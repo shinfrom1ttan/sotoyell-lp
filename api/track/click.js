@@ -36,32 +36,29 @@ export default async function handler(req, res) {
     '';
   const referer = req.headers['referer'] || req.headers['referrer'] || '';
 
-  // 同期書き込み（ユーザーは GIF だけ受け取れば良いが、ログが落ちる方が困るので await）
-  // ただしエラーは無視（ピクセル応答は必ず返す）
-  // Clicks シートは Phase B-4 で作成したヘッダ:
-  //   timestamp / campaign_id / token / email / company / phone / utm_source / utm_medium / utm_campaign
-  // LP 到達時は company / phone は空欄、UTM はクエリから取得
+  // Sheets 書き込みを await（res.end() 後の Promise は実行保証されないため）
   const utmSource = (req.query?.utm_source || '').toString();
   const utmMedium = (req.query?.utm_medium || '').toString();
   const utmCampaign = (req.query?.utm_campaign || '').toString();
 
-  appendRow('Clicks', [
-    new Date().toISOString(),
-    c,
-    u,
-    decodeToken(u),
-    '', // company は空欄（LP到達時点では未取得）
-    '', // phone も空欄
-    utmSource,
-    utmMedium,
-    utmCampaign,
-    // 末尾に補助情報（JSのonloadから呼ばれる場合は user_agent / ip / referer も記録）
-    ua,
-    ip,
-    referer,
-  ]).catch((err) => {
+  try {
+    await appendRow('Clicks', [
+      new Date().toISOString(),
+      c,
+      u,
+      decodeToken(u),
+      '', // company は空欄（LP到達時点では未取得）
+      '', // phone も空欄
+      utmSource,
+      utmMedium,
+      utmCampaign,
+      ua,
+      ip,
+      referer,
+    ]);
+  } catch (err) {
     console.error('Sheets append (Clicks landing) failed:', err.message);
-  });
+  }
 
   for (const [k, v] of Object.entries(PIXEL_HEADERS)) res.setHeader(k, v);
   res.status(200).end(PIXEL);
