@@ -56,19 +56,22 @@ export default async function handler(req, res) {
 
   // Sheets の Conversions シートに追記（フォーム送信＝コンバージョン）
   // Clicks シートは /api/track/click が「LP到達」として書く別物。混同しない。
-  appendRow('Conversions', [
-    new Date().toISOString(),
-    c,
-    u,
-    decodedEmail,
-    company,
-    phone,
-    utmSource,
-    utmMedium,
-    utmCampaign,
-  ]).catch((err) => {
+  // res.redirect 後の Promise は実行保証されないため await する。
+  try {
+    await appendRow('Conversions', [
+      new Date().toISOString(),
+      c,
+      u,
+      decodedEmail,
+      company,
+      phone,
+      utmSource,
+      utmMedium,
+      utmCampaign,
+    ]);
+  } catch (err) {
     console.error('Sheets append (Conversions) failed:', err.message);
-  });
+  }
 
   return res.redirect(302, '/thanks.html');
 }
